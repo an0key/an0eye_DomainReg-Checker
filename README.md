@@ -1,4 +1,4 @@
-# an0key-an0eye_DomainReg-Checker
+# an0eye_DomainReg-Checker
 
 A domain registration monitoring script initially for an0 Technology's an0Eye service. This script provides CheckMK-compatible monitoring of domain expiration dates with performance data output.
 
