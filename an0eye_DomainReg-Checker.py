@@ -67,13 +67,14 @@ def main():
 
     last_check = state.get("last_check")
     if last_check and time.time() - last_check < args.check_interval:
-        print("Using cached result")
         cached_status = state.get("status")
         if cached_status:
             # Add version info to cached status if not present
             if "v" not in cached_status:
                 cached_status += f" [v{__version__}]"
-        print(cached_status)
+            print(cached_status)
+        else:
+            print(f"UNKNOWN - No cached status available [v{__version__}]")
         return
 
     result = check_domain(args.domain)
