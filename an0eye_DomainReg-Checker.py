@@ -69,21 +69,21 @@ def main():
     if last_check and time.time() - last_check < args.check_interval:
         cached_status = state.get("status")
         if cached_status:
-            # Add version info to cached status if not present
-            if "v" not in cached_status:
-                cached_status += f" [v{__version__}]"
+            # Remove version info from cached status if present
+            if "[v" in cached_status:
+                cached_status = cached_status.split(" [v")[0]
             print(cached_status)
         else:
-            print(f"UNKNOWN - No cached status available [v{__version__}]")
+            print("UNKNOWN - No cached status available")
         return
 
     result = check_domain(args.domain)
     if result[0] is None:
-        print(f"UNKNOWN - Unable to retrieve domain information [v{__version__}]")
+        print("UNKNOWN - Unable to retrieve domain information")
         return
     
     if result[0] == "UNREGISTERED":
-        status = f"CRITICAL - Domain is unregistered. Registrar: N/A|days_to_expiration=-1;{args.warning_days};0;; [v{__version__}]"
+        status = f"CRITICAL - Domain is unregistered. Registrar: N/A|days_to_expiration=-1;{args.warning_days};0;;"
         print(status)
         
         state["last_check"] = time.time()
@@ -105,11 +105,11 @@ def main():
     perf_data = f"|days_to_expiration={days_to_expiration:.2f};{args.warning_days};0;;"
 
     if days_to_expiration < 0:
-        status = f"CRITICAL - Domain is unregistered. Registrar: {registrar}{perf_data} [v{__version__}]"
+        status = f"CRITICAL - Domain is unregistered. Registrar: {registrar}{perf_data}"
     elif days_to_expiration <= args.warning_days:
-        status = f"WARNING - Domain expires in {rounded_days} days. Registrar: {registrar}{perf_data} [v{__version__}]"
+        status = f"WARNING - Domain expires in {rounded_days} days. Registrar: {registrar}{perf_data}"
     else:
-        status = f"OK - Domain is registered and expires in {rounded_days} days. Registrar: {registrar}{perf_data} [v{__version__}]"
+        status = f"OK - Domain is registered and expires in {rounded_days} days. Registrar: {registrar}{perf_data}"
 
     print(status)
 
