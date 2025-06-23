@@ -54,7 +54,7 @@ def check_domain(domain):
         return None, None
 
 def get_state_file_path(domain):
-    base_dir = "/tmp/var/lib/check_mk_agent/DNSReg"
+    base_dir = "/var/lib/check_mk_agent/DNSReg"
     os.makedirs(base_dir, exist_ok=True)
     sanitized_domain = domain.replace(".", "_")
     return os.path.join(base_dir, f"{sanitized_domain}_state.json")
